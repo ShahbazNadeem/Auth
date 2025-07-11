@@ -13,10 +13,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useState } from "react"
-import { signIn } from 'next-auth/react';
+import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 const page = () => {
+  const { data: session } = useSession()
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -44,6 +45,16 @@ const page = () => {
     }
 
   }
+
+  if (session) {
+    return (
+      <>
+        Signed in as {session.user.email} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    )
+  }
+
   return (
     <div className="flex justify-center items-center h-screen">
       <Card className="w-full max-w-sm">
