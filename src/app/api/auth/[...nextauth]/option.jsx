@@ -1,4 +1,7 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
+import LinkedInProvider from "next-auth/providers/linkedin";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
@@ -46,6 +49,18 @@ export const authOptions = {
             }
 
         }),
+        LinkedInProvider({
+            clientId: process.env.LINKEDIN_CLIENT_ID,
+            clientSecret: process.env.LINKEDIN_CLIENT_SECRET
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
+        GitHubProvider({
+            clientId: process.env.GITHUB_ID,
+            clientSecret: process.env.GITHUB_SECRET
+        }),
     ],
     pages: {
         signIn: '/signin',
@@ -56,11 +71,10 @@ export const authOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.Id;
-                token.name = user.Name;
-                token.email = user.Email;
+                token.id = user.Id || user.id;
+                token.name = user.Name || user.name;
+                token.email = user.Email || user.email;
             }
-
             return token;
         },
         async session({ session, token }) {
@@ -69,6 +83,7 @@ export const authOptions = {
             session.user.email = token.email;
             return session;
         },
+
     },
     secret: process.env.AUTH_SECRET,
 };

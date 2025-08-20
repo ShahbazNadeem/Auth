@@ -56,8 +56,8 @@ const page = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Card className="w-full max-w-sm">
+    <div className="flex flex-col justify-center items-center h-screen">
+      {/* <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
@@ -105,7 +105,15 @@ const page = () => {
             Login with Google
           </Button>
         </CardFooter>
-      </Card>
+      </Card> */}
+      <button onClick={() => signIn("google")} variant="outline" className="w-full">
+        Login with Google
+      </button>
+
+      <Button onClick={() => signIn("github")} variant="outline" className="w-full">
+        Login with GitHub
+      </Button>
+
     </div>
   )
 }
